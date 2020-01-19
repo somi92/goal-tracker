@@ -1,0 +1,7 @@
+src/template.html
+src/**/*.svelte
+src/node_modules/**/*.js
+src/node_modules/**/*.mjs
+src/components/**/*.js
+src/routes/**/*.js
+src/service-worker.js
