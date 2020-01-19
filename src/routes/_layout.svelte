@@ -28,7 +28,7 @@
     max-width: 56em;
     background-color: #3b3b3b;
     padding: 2em;
-    margin: 0 auto;
+    margin: 3em auto 0;
     box-sizing: border-box;
   }
 
