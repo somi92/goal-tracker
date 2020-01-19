@@ -48,9 +48,9 @@
 
   a {
     text-decoration: none;
-    padding: 1em 0.5em;
+    padding: 0.5em 0.5em;
     display: block;
-    font-size: 1.2em;
+    font-size: 1.3em;
   }
 </style>
 
