@@ -1,3 +1,4 @@
+rollup.config.js
 src/template.html
 src/**/*.svelte
 src/node_modules/**/*.js

@@ -1,3 +1,20 @@
+<script>
+  import { stores } from '@sapper/app';
+  import { onMount } from 'svelte';
+
+  const { session } = stores();
+
+  let data = '';
+  onMount(async () => {
+    try {
+      const response = await fetch(`${$session.appUrl}/hello`);
+      data = (await response.json()).data;
+    } catch (error) {
+      console.log(error);
+    }
+  });
+</script>
+
 <style>
   h1,
   figure,
@@ -42,7 +59,9 @@
 
 <figure>
   <img alt="Borat" src="great-success.png" />
-  <figcaption>HIGH FIVE!</figcaption>
+  {#if data}
+    <figcaption>{data}</figcaption>
+  {/if}
 </figure>
 
 <p>
