@@ -1,14 +1,28 @@
 <script>
   import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
+  import ApolloClient from 'apollo-boost';
+  import { setClient } from 'svelte-apollo';
+  import fetch from 'node-fetch';
+  import gql from 'graphql-tag';
 
   const { session } = stores();
 
   let data = '';
+
+  const client = new ApolloClient({ uri: `${$session.appUrl}/graphql`, fetch });
+
   onMount(async () => {
+    setClient(client);
     try {
-      const response = await fetch(`${$session.appUrl}/hello`);
-      data = (await response.json()).data;
+      const response = await client.query({
+        query: gql`
+          {
+            hello
+          }
+        `,
+      });
+      data = response.data.hello;
     } catch (error) {
       console.log(error);
     }

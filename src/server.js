@@ -7,6 +7,8 @@ import { OAuth2Strategy } from 'passport-google-oauth';
 import { json } from 'body-parser';
 import session from 'express-session';
 import sessionFileStore from 'session-file-store';
+import { buildSchema } from 'graphql';
+import graphqlHttp from 'express-graphql';
 
 const {
   PORT,
@@ -54,6 +56,17 @@ passport.deserializeUser((obj, cb) => {
 });
 
 const app = express();
+
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+const rootValue = {
+  hello: () => 'Hello World!!!',
+};
+
 app
   .use(passport.initialize())
   .use(json())
@@ -89,6 +102,21 @@ app
       res.json({ data: 'Hello World!' });
     }
   })
+  .use(
+    '/graphql',
+    graphqlHttp((req, res) => {
+      const isAuth = req.session.passport ? req.session.passport.user : null;
+      if (!isAuth) {
+        res.status(401).json({ errorMessage: 'Unauthorized user' });
+        return null;
+      }
+      return {
+        schema,
+        rootValue,
+        graphiql: true,
+      };
+    }),
+  )
   .use(
     compression({ threshold: 0 }),
     sirv('static', { dev }),
